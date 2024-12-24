@@ -54,10 +54,10 @@ const frankenSplice = (arr1, arr2, n) => {
     let arr1It = 0
     let arr2It = 0
     while (result.length < arr1.length + arr2.length) {
-        if(arr2It < arr2.length && (arr2It < n || (arr2It >= n && arr1It >= arr1.length))) {
+        if (arr2It < arr2.length && (arr2It < n || (arr2It >= n && arr1It >= arr1.length))) {
             result.push(arr2[arr2It])
             arr2It++
-        }else {
+        } else {
             result.push(arr1[arr1It])
             arr1It++
         }
@@ -65,6 +65,63 @@ const frankenSplice = (arr1, arr2, n) => {
     return result
 }
 
+const bouncer = arr => arr.filter(x => x)
+
+const getIndexToIns = (arr, num) => {
+    arr.sort((a, b) => a - b)
+    if(num <= arr[0]){
+        return 0
+    }
+    let i = 0
+    while (i < arr.length) {
+        i++
+        if(num > arr[i - 1] && num <= arr[i]) {
+            break
+        }
+
+    }
+    return i
+}
+const mutation = arr => {
+    const toLowerAsciiSet = str => {
+        const set = new Set()
+        const caseOffset = 32
+        const capA = 65
+        const capZ = 90
+        const lowA = 97
+        const lowZ = 122
+        for (let i = 0; i < str.length; i++) {
+            let code = str.charCodeAt(i)
+            if (code >= capA && code <= capZ) {
+                code += caseOffset
+            }
+            if (code >= lowA && code <= lowZ) {
+                set.add(code)
+            }
+        }
+        return set
+    }
+    const lowerSetA = toLowerAsciiSet(arr[0])
+    const lowerSetB = toLowerAsciiSet(arr[1])
+    const difference = new Set()
+    lowerSetB.forEach(e => {
+        if (!lowerSetA.has(e)) {
+            difference.add(e)
+        }
+    });
+    return difference.size === 0
+}
+const chunkArrayInGroups = (arr, size) => {
+    const result = []
+    let start = 0
+    let end = 0
+    while (end < arr.length) {
+        end = size + start
+        result.push(arr.slice(start, end ))
+        start = end
+    }
+    return result
+}
 export {
     convertCtoF,
     reverseString,
@@ -77,5 +134,9 @@ export {
     findElement,
     booWho,
     titleCase,
-    frankenSplice
+    frankenSplice,
+    bouncer,
+    getIndexToIns,
+    mutation,
+    chunkArrayInGroups
 }
